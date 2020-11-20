@@ -6,7 +6,9 @@
   "scripts": {
     "test-lint": "eslint ./test/*.js --fix",
     "start": "node ./bin/www",
-    "test": "mocha && yarn test-lint"
+    "sequalize":"sequalize",
+    "seed":"yarn sequalize db:seed:undo:all && yarn sequalize db:seed:all",
+    "test": "yarn seed && mocha && yarn test-lint"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
