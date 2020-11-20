@@ -6,7 +6,7 @@
   "scripts": {
     "test-lint": "eslint ./test/*.js --fix",
     "start": "node ./bin/www",
-    "sequalize":"sequelize",
+    "sequelize":"sequelize",
     "seed":"yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
     "test": "mocha && yarn test-lint"
   },
