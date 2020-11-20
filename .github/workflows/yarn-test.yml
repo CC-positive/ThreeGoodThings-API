@@ -24,8 +24,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: yarn --frozen-lockfile
-      - name: Enable uuid_generate()
+      - name: copy shell to docker container
         run: docker cp ./db/enable_uuid.sh postgres:/enable_uuid.sh
+      - name: enable uuid
         run: docker exec postgres sh /enable_uuid.sh postgres password postgres
       - name: Create database
         run: yarn sequelize db:create
