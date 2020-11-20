@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: ThreeGoodThings-API Specification
+  description: This is the specification of ThreeGoodThings-API. See https://github.com/CC-positive/ThreeGoodThings-API
+paths:
+  /v1/threetter/posts:
+    get:
+      summary: Get all threetter posts records.
+      description: 全レコードを返却します.
+      responses:
+        '200':
+          description: HTTPステータスコード200と以下の情報を含むJSONオブジェクトを返します。
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: "object"
+                  properties:
+                    id:
+                      type: string
+                      example: "fdc357de-4d85-4e4f-9c10-6d9bd5143849"
+                    date:
+                      type: string
+                      example: "2020-11-20T07:06:09.247Z"
+                    user:
+                      type: "object"
+                      properties: 
+                        id:
+                          type: string
+                          example: "4a1f6310-1b15-4c10-8fd4-fd2140e8d03b"
+                        name:
+                          type: string
+                          example: "一郎"
+                    tgts:
+                      type: "object"
+                      properties: 
+                        id1:
+                          type: string
+                          example: "93b9332c-93cb-474d-8636-780f1a6f3cd7"
+                        text1:
+                          type: string
+                          example: "今日は禁煙できた１！"
+                        id2:
+                          type: string
+                          example: "93b9332c-93cb-474d-8636-780f1a6f3cd8"
+                        text2:
+                          type: string
+                          example: "今日は禁煙できた２！"
+                        id3:
+                          type: string
+                          example: "93b9332c-93cb-474d-8636-780f1a6f3cd9"
+                        text3:
+                          type: string
+                          example: "今日は禁煙できた３！"
+    post:
+      summary: Post a forecast weather record which you send in request body.
+      description: ボディで指定された列を持つレコードを新規追加します.
+      # リクエストのbodyについて記述する
+      parameters:
+      # パラメータの名前
+      - name: "body"
+        # パラメータの場所
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            userName:
+              type: string
+              example: 太郎
+            tgt1:
+              type: string
+              example: 今日は禁煙できた！
+            tgt2:
+              type: string
+              example: ゆで卵が美味しかった。
+            tgt3:
+              type: string
+              example: ご飯が美味しく炊けた。
+      responses:
+        '201':
+          description: HTTPステータスコード201が返却されます。
