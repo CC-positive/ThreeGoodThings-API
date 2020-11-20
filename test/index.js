@@ -37,15 +37,50 @@ describe("Threetter API Server", () => {
   it("GET /posts should return entire post list", async () => {
     //setup
     const endpoint = "/posts";
-    const posts = db.posts.findAll({
-      raw: true,
-      include: [
-        {
-          model: db.users,
-          required: true,
-        },
-      ],
-    });
+    const posts = db.posts
+      .findAll({
+        raw: true,
+        include: [
+          {
+            model: db.users,
+            required: true,
+          },
+          {
+            model: db.tgts,
+            required: true,
+          },
+        ],
+      })
+      .then((data) => {
+        let posts = [];
+        for (post of data) {
+          const postsIndex = posts.findIndex((p) => p.id === post.id);
+          if (postsIndex === -1) {
+            const resPost = {
+              id: post.id,
+              date: post.date,
+              user: {
+                id: post["user.id"],
+                name: post["user.userName"],
+              },
+              tgts: {
+                id1: post["tgts.id"],
+                text1: post["tgts.tgt"],
+              },
+            };
+            posts.push(resPost);
+          } else {
+            if (!posts[postsIndex].tgts.id2) {
+              posts[postsIndex].tgts.id2 = post["tgts.id"];
+              posts[postsIndex].tgts.text2 = post["tgts.tgt"];
+            } else {
+              posts[postsIndex].tgts.id3 = ["post.tgts.id"];
+              posts[postsIndex].tgts.text3 = ["post.tgts.tgt"];
+            }
+          }
+        }
+        return posts;
+      });
     //exercise
     const res = await request.get(endpoint);
     //assertion
@@ -59,22 +94,13 @@ describe("Threetter API Server", () => {
     const endpoint = "/posts";
     const sampleData = {
       userName: "山田勝己",
-      tgts: [
-        { tgt: "今日は禁煙できた！" },
-        { tgt: "今日は禁煙できた！" },
-        { tgt: "今日は禁煙できた！" },
-      ],
-    }; //TODO determine data format
+      tgt1: "今日は禁煙できた！1",
+      tgt2: "今日は禁煙できた！2",
+      tgt3: "今日は禁煙できた！3",
+    };
     //exercise
     const res = await request.post(endpoint).send(sampleData);
     //assertion
     res.should.have.status(201);
-    res.should.be.json;
-    const tmpData = JSON.parse(res.body);
-    const respData = {
-      userName: tmpData.userName,
-      tgts: tmpData.tgts,
-    };
-    respData.should.deep.equal(sampleData);
   });
 });
