@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "postgres",
-    "password": "password",
+    "password": "!Qazxsw23e",
     "database": "threetter",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "password",
+    "password": "!Qazxsw23e",
     "database": "threetter",
     "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "password",
+    "password": "!Qazxsw23e",
     "database": "threetter",
     "host": "localhost",
     "dialect": "postgres"
