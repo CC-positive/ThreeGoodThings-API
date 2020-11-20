@@ -13,7 +13,7 @@ chai.should();
 describe("threetter API Server", () => {
   let request, server;
   before(() => {
-    const port = "3000";
+    const port = "8080";
     app.set("port", port);
     const http = require("http");
     server = http.createServer(app);
@@ -31,7 +31,7 @@ describe("threetter API Server", () => {
     server.close();
   });
 
-  it.skip("GET /posts should return entire post list", async () => {
+  it("GET /posts should return entire post list", async () => {
     //setup
     const endpoint = "/posts";
     //exercise
@@ -42,7 +42,7 @@ describe("threetter API Server", () => {
     /* TODO get ideal response */
   });
 
-  it.skip("POST /posts should register TGT", async () => {
+  it("POST /posts should register TGT", async () => {
     //setup
     const endpoint = "/posts";
     const sampleData = {}; //TODO determine data format
