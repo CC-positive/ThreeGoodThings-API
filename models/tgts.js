@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   tgts.init({
     postId: DataTypes.STRING,
-    tgt: DataTypes.STRING
+    tgt: DataTypes.STRING,
+    seq: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'tgts',
