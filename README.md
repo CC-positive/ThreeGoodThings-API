@@ -18,7 +18,9 @@
   - 日々３つの良いことを投稿できて、全体公開できる機能を実現する。
 
 ## What is ThreeGoodThingsAPI
-本リポジトリはThreeGoodThings向けのAPIです。
+本リポジトリはThreeGoodThings向けのAPIです。<br/>
+API仕様は以下をご確認ください。<br/>
+https://cc-positive.github.io/ThreeGoodThings-API/dist/
 
 ## HOW TO INSTALL
 - Postgresqlをインストールしてください。
