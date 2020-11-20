@@ -1,6 +1,6 @@
 name: Node.js/postgres CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   container-job:
