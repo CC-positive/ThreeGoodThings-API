@@ -1,0 +1,42 @@
+name: Node.js/postgres CI
+
+on: [push, pull_request]
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:12.19.1-buster
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          --name postgres
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Create database
+        run: yarn sequelize db:create
+        env:
+          NODE_ENV: test
+      - name: Migrate database
+        run: yarn sequelize db:migrate
+        env:
+          NODE_ENV: test
+      - name: Seed database
+        run: yarn seed
+        env:
+          NODE_ENV: test
+      - name: run test
+        run: yarn test
+        env:
+          NODE_ENV: test
