@@ -10,7 +10,7 @@ const app = require("../app");
 chai.use(chaiHttp);
 chai.should();
 
-describe.skip("threetter API Server", () => {
+describe("threetter API Server", () => {
   let request, server;
   before(() => {
     const port = "3000";
@@ -26,6 +26,11 @@ describe.skip("threetter API Server", () => {
   afterEach(() => {
     request.close();
   });
+
+  after(() => {
+    server.close();
+  });
+
   it.skip("GET /posts should return entire post list", async () => {
     //setup
     const endpoint = "/posts";
