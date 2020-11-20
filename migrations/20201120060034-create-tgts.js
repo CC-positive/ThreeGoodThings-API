@@ -17,6 +17,9 @@ module.exports = {
       tgt: {
         type: Sequelize.STRING
       },
+      seq: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
