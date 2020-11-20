@@ -10,7 +10,7 @@
     "username": "postgres",
     "password": "password",
     "database": "threetter",
-    "host": "localhost",
+    "host": "postgres",
     "dialect": "postgres"
   },
   "production": {
