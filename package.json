@@ -8,7 +8,9 @@
     "start": "node ./bin/www",
     "sequalize":"sequelize",
     "seed":"yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
-    "test": "mocha && yarn test-lint"
+    "test": "mocha && yarn test-lint",
+    "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
+    "setup": "yarn migrate && yarn seed"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

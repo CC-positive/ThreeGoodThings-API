@@ -23,37 +23,35 @@ router.get('/v1/threetter/posts', function(req, res, next) {
     ]
   }).then((data)=>{
     if (data) {
-      console.log("--data here--")
-      console.log(data)
-        let posts = [];
-        for (post of data) {
-          const postsIndex = posts.findIndex((p) => p.id === post.id);
-          if (postsIndex === -1) {
-            const resPost = {
-              id: post.id,
-              date: post.date,
-              user: {
-                id: post['user.id'],
-                name: post['user.userName']
-              },
-              tgts: {
-                id1: post['tgts.id'],
-                text1: post['tgts.tgt'],
-              },
-            };
-            posts.push(resPost);
+      let posts = [];
+      for (post of data) {
+        const postsIndex = posts.findIndex((p) => p.id === post.id);
+        if (postsIndex === -1) {
+          const resPost = {
+            id: post.id,
+            date: post.date.toString(),
+            user: {
+              id: post['user.id'],
+              name: post['user.userName']
+            },
+            tgts: {
+              id1: post['tgts.id'],
+              text1: post['tgts.tgt'],
+            },
+          };
+          posts.push(resPost);
+        } else {
+          if (!posts[postsIndex].tgts.id2) {
+            posts[postsIndex].tgts.id2 = post['tgts.id'];
+            posts[postsIndex].tgts.text2 = post['tgts.tgt'];
           } else {
-            if (!posts[postsIndex].tgts.id2) {
-              posts[postsIndex].tgts.id2 = post['tgts.id'];
-              posts[postsIndex].tgts.text2 = post['tgts.tgt'];
-            } else {
-              posts[postsIndex].tgts.id3 = post['tgts.id'];
-              posts[postsIndex].tgts.text3 = post['tgts.tgt'];
-            }
+            posts[postsIndex].tgts.id3 = post['tgts.id'];
+            posts[postsIndex].tgts.text3 = post['tgts.tgt'];
           }
         }
-        res.set({ "Access-Control-Allow-Origin": "*" }).send(posts).end();
-      }else {
+      }
+      res.set({ "Access-Control-Allow-Origin": "*" }).send(posts).end();
+    }else {
       res.set({ "Access-Control-Allow-Origin": "*" }).status(404).end();
     }
   })
@@ -70,7 +68,6 @@ router.post('/v1/threetter/posts', function(req, res, next) {
       date: new Date()
     }
     db.posts.create(postObj).then((data2)=>{
-      console.log(data2)
       let tgtObj1 = {
         postId: data2.dataValues.id,
         tgt: req.body.tgt1,

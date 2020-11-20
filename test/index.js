@@ -36,10 +36,13 @@ describe("Threetter API Server", () => {
 
   it("GET /posts should return entire post list", async () => {
     //setup
-    const endpoint = "/posts";
-    const posts = db.posts
+    const endpoint = "/v1/threetter/posts";
+    const posts = await db.posts
       .findAll({
         raw: true,
+        order: [
+          [db.tgts, 'seq', 'ASC']
+        ],   
         include: [
           {
             model: db.users,
@@ -53,16 +56,16 @@ describe("Threetter API Server", () => {
       })
       .then((data) => {
         let posts = [];
-        for (post of data) {
+        for (let post of data) {
           const postsIndex = posts.findIndex((p) => p.id === post.id);
           if (postsIndex === -1) {
             const resPost = {
               id: post.id,
-              date: post.date,
+              date: post.date.toString(),
               user: {
                 id: post["user.id"],
                 name: post["user.userName"],
-              },
+              },  
               tgts: {
                 id1: post["tgts.id"],
                 text1: post["tgts.tgt"],
@@ -74,8 +77,8 @@ describe("Threetter API Server", () => {
               posts[postsIndex].tgts.id2 = post["tgts.id"];
               posts[postsIndex].tgts.text2 = post["tgts.tgt"];
             } else {
-              posts[postsIndex].tgts.id3 = ["post.tgts.id"];
-              posts[postsIndex].tgts.text3 = ["post.tgts.tgt"];
+              posts[postsIndex].tgts.id3 = post["tgts.id"];
+              posts[postsIndex].tgts.text3 = post["tgts.tgt"];
             }
           }
         }
@@ -85,13 +88,13 @@ describe("Threetter API Server", () => {
     const res = await request.get(endpoint);
     //assertion
     res.should.have.status(200);
-    res.should.be.json;
-    JSON.parse(res.body).should.deep.equal(posts);
+    res.should.be.json;    
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(posts);
   });
 
   it("POST /posts should register TGT", async () => {
     //setup
-    const endpoint = "/posts";
+    const endpoint = "/v1/threetter/posts";
     const sampleData = {
       userName: "山田勝己",
       tgt1: "今日は禁煙できた！1",
