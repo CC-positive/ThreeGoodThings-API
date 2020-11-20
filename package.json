@@ -4,7 +4,11 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node ./bin/www"
+    "test-lint": "eslint ./test/*.js --fix",
+    "start": "node ./bin/www",
+    "sequalize":"sequelize",
+    "seed":"yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
+    "test": "mocha && yarn test-lint"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
