@@ -58,27 +58,25 @@ paths:
       summary: Post a forecast weather record which you send in request body.
       description: ボディで指定された列を持つレコードを新規追加します.
       # リクエストのbodyについて記述する
-      parameters:
-      # パラメータの名前
-      - name: "body"
-        # パラメータの場所
-        in: "body"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            userName:
-              type: string
-              example: 太郎
-            tgt1:
-              type: string
-              example: 今日は禁煙できた！
-            tgt2:
-              type: string
-              example: ゆで卵が美味しかった。
-            tgt3:
-              type: string
-              example: ご飯が美味しく炊けた。
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: "object"
+              properties:
+                userName:
+                  type: string
+                  example: 太郎
+                tgt1:
+                  type: string
+                  example: 今日は禁煙できた！
+                tgt2:
+                  type: string
+                  example: ゆで卵が美味しかった。
+                tgt3:
+                  type: string
+                  example: ご飯が美味しく炊けた。
       responses:
         '201':
           description: HTTPステータスコード201が返却されます。
