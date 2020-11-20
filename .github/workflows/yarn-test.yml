@@ -9,7 +9,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: fintrace/postgres-uuid
         env:
           POSTGRES_PASSWORD: password
         options: >-
