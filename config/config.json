@@ -12,7 +12,7 @@
     "password": "password",
     "database": "threetter",
     "host": "postgres",
-    "dialect": "postgres"
+    "dialect": "postgres",
     "logging": false
   },
   "production": {
