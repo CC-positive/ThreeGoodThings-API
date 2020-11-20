@@ -55,7 +55,7 @@ paths:
                           type: string
                           example: "今日は禁煙できた３！"
     post:
-      summary: Post a forecast weather record which you send in request body.
+      summary: Post a tgt record which you send in request body.
       description: ボディで指定された列を持つレコードを新規追加します.
       # リクエストのbodyについて記述する
       parameters: []
