@@ -1,4 +1,5 @@
 # ThreeGoodThings-API
+![icon](https://user-images.githubusercontent.com/71970550/99811456-8d3c0680-2b88-11eb-9226-cc715a2bc9f8.png)
 
 ## 注釈
 このリポジトリは Code Chrysalis の生徒であるときに作成しました（This was created during my time as a student at Code Chrysalis）
@@ -11,7 +12,6 @@
 **[Links](#links)**<br>
 
 ## What is ThreeGoodThings
-![icon](https://user-images.githubusercontent.com/71970550/99811456-8d3c0680-2b88-11eb-9226-cc715a2bc9f8.png)
 - ビジョン
   - 小さな幸せを分かち合う
   - ユーザが幸せを共有し合うことで、幸福度を高める
