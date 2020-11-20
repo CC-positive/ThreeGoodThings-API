@@ -1,15 +1,12 @@
 # ThreeGoodThings-API
 ![icon](https://user-images.githubusercontent.com/71970550/99811456-8d3c0680-2b88-11eb-9226-cc715a2bc9f8.png)
 
-## 注釈
-このリポジトリは Code Chrysalis の生徒であるときに作成しました（This was created during my time as a student at Code Chrysalis）
-
 ## Table of Contents
 **[What is ThreeGoodThings](#what-is-threegoodthings)**<br>
 **[What is ThreeGoodThingsAPI](#what-is-threegoodthingsapi)**<br>
 **[HOW TO Install](#how-to-install)**<br>
 **[HOW TO RUN](#how-to-run)**<br>
-**[Links](#links)**<br>
+**[Remarks](#remarks)**<br>
 
 ## What is ThreeGoodThings
 - ビジョン
@@ -37,5 +34,5 @@ https://cc-positive.github.io/ThreeGoodThings-API/dist/
 * コマンド実行（APサーバの8080ポートでHTTPリクエストを受け付けます）
   - yarn start
 
-## Links
-- hogehoge
+## Remarks
+- このリポジトリは Code Chrysalis の生徒であるときに作成しました（This was created during my time as a student at Code Chrysalis）
