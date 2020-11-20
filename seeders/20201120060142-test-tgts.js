@@ -15,15 +15,15 @@ module.exports = {
 
 
     return queryInterface.bulkInsert('tgts', [
-      {postId: pos1.id,  tgt: '一郎のいいこと1', createdAt: now, updatedAt: now},
-      {postId: pos1.id,  tgt: '一郎のいいこと2', createdAt: now, updatedAt: now},
-      {postId: pos1.id,  tgt: '一郎のいいこと3', createdAt: now, updatedAt: now},
-      {postId: pos2.id,  tgt: '二郎のいいこと1', createdAt: now, updatedAt: now},
-      {postId: pos2.id,  tgt: '二郎のいいこと2', createdAt: now, updatedAt: now},
-      {postId: pos2.id,  tgt: '二郎のいいこと3', createdAt: now, updatedAt: now},
-      {postId: pos3.id,  tgt: '三郎のいいこと1', createdAt: now, updatedAt: now},
-      {postId: pos3.id,  tgt: '三郎のいいこと2', createdAt: now, updatedAt: now},
-      {postId: pos3.id,  tgt: '三郎のいいこと3', createdAt: now, updatedAt: now}
+      {postId: pos1.id,  tgt: '一郎のいいこと1', seq: 1 , createdAt: now, updatedAt: now},
+      {postId: pos1.id,  tgt: '一郎のいいこと2', seq: 2 , createdAt: now, updatedAt: now},
+      {postId: pos1.id,  tgt: '一郎のいいこと3', seq: 3 , createdAt: now, updatedAt: now},
+      {postId: pos2.id,  tgt: '二郎のいいこと1', seq: 1 , createdAt: now, updatedAt: now},
+      {postId: pos2.id,  tgt: '二郎のいいこと2', seq: 2 , createdAt: now, updatedAt: now},
+      {postId: pos2.id,  tgt: '二郎のいいこと3', seq: 3 , createdAt: now, updatedAt: now},
+      {postId: pos3.id,  tgt: '三郎のいいこと1', seq: 1 , createdAt: now, updatedAt: now},
+      {postId: pos3.id,  tgt: '三郎のいいこと2', seq: 2 , createdAt: now, updatedAt: now},
+      {postId: pos3.id,  tgt: '三郎のいいこと3', seq: 3 , createdAt: now, updatedAt: now}
     ], {});
 
   },
