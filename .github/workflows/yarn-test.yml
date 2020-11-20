@@ -25,10 +25,16 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Create database
         run: yarn sequelize db:create
+        env:
+          NODE_ENV: test
       - name: Migrate database
         run: yarn sequelize db:migrate
+        env:
+          NODE_ENV: test
       - name: Seed database
         run: yarn seed
+        env:
+          NODE_ENV: test
       - name: run test
         run: yarn test
         env:
