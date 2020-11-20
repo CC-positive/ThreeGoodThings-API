@@ -1,2 +1,2 @@
 #!/bin/sh
-psql -f ./enable_uuid.sql -U $1 -d $2 -h $3
+psql -f ./enable_uuid.sql -U $2 -d $3 -h $4

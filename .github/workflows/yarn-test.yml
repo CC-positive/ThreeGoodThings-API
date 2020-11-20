@@ -17,6 +17,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --name postgres
 
     steps:
       - name: Check out repository code
@@ -24,7 +25,8 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Enable uuid_generate()
-        run: sh ./db/enable_uuid.sh postgres password postgres
+        run: docker cp ./db/enable_uuid.sh postgres:/enable_uuid.sh
+        run: docker exec postgres sh /enable_uuid.sh postgres password postgres
       - name: Create database
         run: yarn sequelize db:create
         env:
