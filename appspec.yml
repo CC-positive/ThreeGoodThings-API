@@ -5,7 +5,7 @@ files:
     destination: /home/centos/deploy/ThreeGoodThings-API
 hooks:
   BeforeInstall:
-    - location: yarn --frozen-lockfile
+    - location: scripts/install.sh
   ApplicationStart:
-    - location: yarn production
+    - location: scripts/start.sh
       timeout: 3600
