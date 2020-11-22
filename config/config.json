@@ -17,9 +17,9 @@
   },
   "production": {
     "username": "postgres",
-    "password": "password",
+    "password": "postgres",
     "database": "threetter",
-    "host": "localhost",
+    "host": "tgtpdb01.cshhphv2bocb.ap-northeast-1.rds.amazonaws.com",
     "dialect": "postgres",
     "logging": false
   }
