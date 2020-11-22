@@ -13,6 +13,11 @@
     "setup": "yarn migrate && yarn seed",
     "production": "export NODE_ENV=production && node ./bin/www"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
