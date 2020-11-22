@@ -1,3 +1,5 @@
 #!/bin/bash
+su - << EOF
 cd /home/centos/deploy/ThreeGoodThings-API
-sudo -u centos yarn production
+yarn production
+EOF
