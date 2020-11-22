@@ -4,8 +4,8 @@ files:
   - source: /
     destination: /home/centos/deploy/ThreeGoodThings-API
 hooks:
-  BeforeInstall:
-    - location: scripts/beforeInstall.sh
+  ApplicationStop:
+    - location: scripts/stop.sh
   Install:
     - location: scripts/install.sh
   ApplicationStart:
