@@ -2,7 +2,7 @@ name: AWS Code Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/code-deploy-production]
 
 jobs:
   build:
