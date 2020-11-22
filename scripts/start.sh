@@ -1,5 +1,2 @@
 #!/bin/bash
-su - << EOF
-cd /home/centos/deploy/ThreeGoodThings-API
-nohup yarn production &
-EOF
+bash /home/centos/deploy/ThreeGoodThings-API/scripts/run.sh  > /dev/null 2> /dev/null < /dev/null &
