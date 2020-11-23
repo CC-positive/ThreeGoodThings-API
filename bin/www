@@ -16,27 +16,6 @@ var port = normalizePort(process.env.PORT || "8080");
 app.set("port", port);
 
 /**
- * Enable CORS request
- */
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://18.181.45.23:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-
-  app.options("*", (req, res) => {
-    // allowed XHR methods
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, PATCH, PUT, POST, DELETE, OPTIONS"
-    );
-    res.send();
-  });
-});
-
-/**
  * Create HTTP server.
  */
 
