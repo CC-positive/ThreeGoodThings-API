@@ -3,7 +3,7 @@ name: Node.js/postgres CI
 on: [push, pull_request]
 
 jobs:
-  container-job:
+  yarn-test:
     runs-on: ubuntu-latest
     container: node:12.19.1-buster
 
