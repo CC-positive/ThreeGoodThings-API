@@ -4,8 +4,10 @@ files:
   - source: /
     destination: /home/centos/deploy/ThreeGoodThings-API
 hooks:
-  BeforeInstall:
+  ApplicationStop:
+    - location: scripts/stop.sh
+  Install:
     - location: scripts/install.sh
   ApplicationStart:
     - location: scripts/start.sh
-      timeout: 3600
+      timeout: 60
