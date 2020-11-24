@@ -5,18 +5,24 @@
   "license": "UNLICENSED",
   "scripts": {
     "test-lint": "eslint ./test/*.js --fix",
-    "lint": "eslint **/*.js --fix",
+    "lint": "eslint '**/*.js' --fix",
     "start": "node ./bin/www",
     "sequelize": "sequelize",
     "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
-    "test": "mocha && eslint **/*.js",
+    "dev-test": "mocha && eslint **/*.js",
+    "test": "mocha && eslint '**/*.js'",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
     "production": "export NODE_ENV=production && node ./bin/www"
   },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --fix"
+    ]
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
@@ -42,6 +48,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-sequelize": "^1.0.4",
     "husky": "^4.3.0",
+    "lint-staged": "^10.5.2",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
     "prettier": "^2.2.0",

@@ -1,17 +1,17 @@
-const express = require("express");
-const db = require("../models/index");
+const express = require('express');
+const db = require('../models/index');
 
 const router = express.Router();
 
 /* GET home page. */
-router.get("/v1/threetter/posts", (req, res) => {
+router.get('/v1/threetter/posts', (req, res) => {
   db.posts
     .findAll({
       where: {},
       raw: true,
       order: [
-        ["date", "DESC"],
-        [db.tgts, "seq", "ASC"],
+        ['date', 'DESC'],
+        [db.tgts, 'seq', 'ASC'],
       ],
       include: [
         {
@@ -34,32 +34,32 @@ router.get("/v1/threetter/posts", (req, res) => {
               id: post.id,
               date: post.date.toString(),
               user: {
-                id: post["user.id"],
-                name: post["user.userName"],
+                id: post['user.id'],
+                name: post['user.userName'],
               },
               tgts: {
-                id1: post["tgts.id"],
-                text1: post["tgts.tgt"],
+                id1: post['tgts.id'],
+                text1: post['tgts.tgt'],
               },
             };
             posts.push(resPost);
           } else if (!posts[postsIndex].tgts.id2) {
-            posts[postsIndex].tgts.id2 = post["tgts.id"];
-            posts[postsIndex].tgts.text2 = post["tgts.tgt"];
+            posts[postsIndex].tgts.id2 = post['tgts.id'];
+            posts[postsIndex].tgts.text2 = post['tgts.tgt'];
           } else {
-            posts[postsIndex].tgts.id3 = post["tgts.id"];
-            posts[postsIndex].tgts.text3 = post["tgts.tgt"];
+            posts[postsIndex].tgts.id3 = post['tgts.id'];
+            posts[postsIndex].tgts.text3 = post['tgts.tgt'];
           }
         });
-        res.set({ "Access-Control-Allow-Origin": "*" }).send(posts).end();
+        res.set({ 'Access-Control-Allow-Origin': '*' }).send(posts).end();
       } else {
-        res.set({ "Access-Control-Allow-Origin": "*" }).status(404).end();
+        res.set({ 'Access-Control-Allow-Origin': '*' }).status(404).end();
       }
     });
 });
 
 /* POST */
-router.post("/v1/threetter/posts", (req, res) => {
+router.post('/v1/threetter/posts', (req, res) => {
   const userObj = {
     userName: req.body.userName,
   };
@@ -95,7 +95,7 @@ router.post("/v1/threetter/posts", (req, res) => {
   });
 });
 
-router.post("/v1/threetter/login", (req, res) => {
+router.post('/v1/threetter/login', (req, res) => {
   db.users
     .findAll({
       where: {
