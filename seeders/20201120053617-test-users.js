@@ -23,6 +23,13 @@ module.exports = {
         createdAt: now,
         updatedAt: now,
       },
+      {
+        userName: '四郎',
+        picture: 'hogetoken',
+        googleId: 'hogegoogleid4',
+        createdAt: now,
+        updatedAt: now,
+      },
     ]);
   },
 

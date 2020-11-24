@@ -146,6 +146,24 @@ describe('Threetter API Server', () => {
     res.should.be.json;
     JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
   });
+  // 13日前分＋12日前分＋一昨日分＋昨日分＋本日分がpost済のパターン（連続：３＋昔に２ 当日投稿あり）
+  // ⇒過去の連続を拾っていないことを確認するテスト
+  it('GET /reward should return entire post continuation number(past 3 pattern)', async () => {
+    // setup
+    // seedファイルがある前提
+    const endpoint = '/v1/threetter/rewards';
+    const target = 'hogegoogleid4';
+    const expect = {
+      continuation: 3,
+      today: 1,
+    };
+    // exercise
+    const res = await request.get(endpoint).query({ googleId: target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
 
   it('POST /posts should register TGT', async () => {
     // setup

@@ -117,6 +117,8 @@ router.get('/v1/threetter/rewards', (req, res, next) => {
           // 比較日付とpost日付が一致する場合continuousをインクリメント
           if (compareDate.toDateString() === postDate.toDateString()) {
             continuous += 1;
+          } else {
+            break;
           }
         }
 
