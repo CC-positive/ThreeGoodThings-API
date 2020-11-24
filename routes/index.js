@@ -36,6 +36,7 @@ router.get('/v1/threetter/posts', (req, res) => {
               user: {
                 id: post['user.id'],
                 name: post['user.userName'],
+                picture: post['user.picture'],
               },
               tgts: {
                 id1: post['tgts.id'],
@@ -137,39 +138,44 @@ router.get('/v1/threetter/rewards', (req, res, next) => {
 
 /* POST */
 router.post('/v1/threetter/posts', (req, res) => {
-  const userObj = {
-    userName: req.body.userName,
-  };
-  db.users.create(userObj).then((data1) => {
-    const postObj = {
-      userId: data1.dataValues.id,
-      date: new Date(),
-    };
-    db.posts.create(postObj).then((data2) => {
-      const tgtObj1 = {
-        postId: data2.dataValues.id,
-        tgt: req.body.tgt1,
-        seq: 1,
+  db.users
+    .findAll({
+      where: { googleId: req.headers['x-googleid'] },
+      raw: true,
+    })
+    .then((data1) => {
+      const postObj = {
+        userId: data1[0].id,
+        date: new Date(),
       };
-      const tgtObj2 = {
-        postId: data2.dataValues.id,
-        tgt: req.body.tgt2,
-        seq: 2,
-      };
-      const tgtObj3 = {
-        postId: data2.dataValues.id,
-        tgt: req.body.tgt3,
-        seq: 3,
-      };
-      Promise.all([
-        db.tgts.create(tgtObj1),
-        db.tgts.create(tgtObj2),
-        db.tgts.create(tgtObj3),
-      ]).then(() => {
-        res.status(201).end();
+      db.posts.create(postObj).then((data2) => {
+        const tgtObj1 = {
+          postId: data2.dataValues.id,
+          tgt: req.body.tgt1,
+          seq: 1,
+        };
+        const tgtObj2 = {
+          postId: data2.dataValues.id,
+          tgt: req.body.tgt2,
+          seq: 2,
+        };
+        const tgtObj3 = {
+          postId: data2.dataValues.id,
+          tgt: req.body.tgt3,
+          seq: 3,
+        };
+        Promise.all([
+          db.tgts.create(tgtObj1),
+          db.tgts.create(tgtObj2),
+          db.tgts.create(tgtObj3),
+        ]).then(() => {
+          res.status(201).end();
+        });
       });
+    })
+    .catch((data) => {
+      res.status(500).end();
     });
-  });
 });
 
 router.post('/v1/threetter/login', (req, res) => {

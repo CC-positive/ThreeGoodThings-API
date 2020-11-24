@@ -9,7 +9,7 @@
     "start": "node ./bin/www",
     "sequelize": "sequelize",
     "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
-    "dev-test": "mocha && eslint **/*.js",
+    "dev-test": "mocha && eslint **/*.js --fix",
     "test": "mocha && eslint '**/*.js' --fix",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
