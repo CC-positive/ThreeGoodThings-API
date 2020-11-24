@@ -10,7 +10,7 @@
     "sequelize": "sequelize",
     "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
     "dev-test": "mocha && eslint **/*.js",
-    "test": "mocha && eslint '**/*.js'",
+    "test": "mocha && eslint '**/*.js' --fix",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
     "production": "export NODE_ENV=production && node ./bin/www"
