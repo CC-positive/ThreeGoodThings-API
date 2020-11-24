@@ -5,10 +5,20 @@
         "es2021": true,
         "mocha":true
     },
-    "extends": "eslint:recommended",
+    "extends": ["airbnb-base"],
     "parserOptions": {
         "ecmaVersion": 12
     },
     "rules": {
-    }
+        "no-unused-expressions": "off",
+        "no-shadow":"off",
+        "no-unused-vars":"warn",
+        "import/no-dynamic-require":"warn",
+        "global-require":"warn",
+        "sequelize/create-indexes-concurrently":"error"
+    },
+    "plugins":[
+        "sequelize",
+        "node"
+    ]
 }

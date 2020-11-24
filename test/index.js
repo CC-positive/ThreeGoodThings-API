@@ -1,24 +1,25 @@
-//testing framework
-require("mocha");
-const chai = require("chai");
-const chaiHttp = require("chai-http");
+// testing framework
+require('mocha');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
-//express
-const app = require("../app");
+// express
+const http = require('http');
+const app = require('../app');
 
-//db
-const db = require("../models/index");
+// db
+const db = require('../models/index');
 
-//chai
+// chai
 chai.use(chaiHttp);
 chai.should();
 
-describe("Threetter API Server", () => {
-  let request, server;
+describe('Threetter API Server', () => {
+  let request;
+  let server;
   before(() => {
-    const port = "8080";
-    app.set("port", port);
-    const http = require("http");
+    const port = '8080';
+    app.set('port', port);
     server = http.createServer(app);
     server.listen(port);
   });
@@ -34,13 +35,15 @@ describe("Threetter API Server", () => {
     server.close();
   });
 
-  it("GET /posts should return entire post list", async () => {
-    //setup
-    const endpoint = "/v1/threetter/posts";
+  it('GET /posts should return entire post list', async () => {
+    // setup
+    const endpoint = '/v1/threetter/posts';
     const posts = await db.posts
       .findAll({
         raw: true,
+
         order: [[db.tgts, "seq", "ASC"]],
+
         include: [
           {
             model: db.users,
@@ -53,55 +56,55 @@ describe("Threetter API Server", () => {
         ],
       })
       .then((data) => {
-        let posts = [];
-        for (let post of data) {
-          const postsIndex = posts.findIndex((p) => p.id === post.id);
+        const postsArray = [];
+        data.forEach((post) => {
+          const postsIndex = postsArray.findIndex((p) => p.id === post.id);
           if (postsIndex === -1) {
             const resPost = {
               id: post.id,
               date: post.date.toString(),
               user: {
+
                 id: post["user.id"],
                 name: post["user.userName"],
+
               },
               tgts: {
-                id1: post["tgts.id"],
-                text1: post["tgts.tgt"],
+                id1: post['tgts.id'],
+                text1: post['tgts.tgt'],
               },
             };
-            posts.push(resPost);
+            postsArray.push(resPost);
+          } else if (!postsArray[postsIndex].tgts.id2) {
+            postsArray[postsIndex].tgts.id2 = post['tgts.id'];
+            postsArray[postsIndex].tgts.text2 = post['tgts.tgt'];
           } else {
-            if (!posts[postsIndex].tgts.id2) {
-              posts[postsIndex].tgts.id2 = post["tgts.id"];
-              posts[postsIndex].tgts.text2 = post["tgts.tgt"];
-            } else {
-              posts[postsIndex].tgts.id3 = post["tgts.id"];
-              posts[postsIndex].tgts.text3 = post["tgts.tgt"];
-            }
+            postsArray[postsIndex].tgts.id3 = post['tgts.id'];
+            postsArray[postsIndex].tgts.text3 = post['tgts.tgt'];
           }
-        }
-        return posts;
+        });
+        return postsArray;
       });
-    //exercise
+    // exercise
     const res = await request.get(endpoint);
-    //assertion
+    // assertion
     res.should.have.status(200);
     res.should.be.json;
     JSON.parse(JSON.stringify(res.body)).should.deep.equal(posts);
   });
 
-  it("POST /posts should register TGT", async () => {
-    //setup
-    const endpoint = "/v1/threetter/posts";
+  it('POST /posts should register TGT', async () => {
+    // setup
+    const endpoint = '/v1/threetter/posts';
     const sampleData = {
-      userName: "山田勝己",
-      tgt1: "今日は禁煙できた！1",
-      tgt2: "今日は禁煙できた！2",
-      tgt3: "今日は禁煙できた！3",
+      userName: '山田勝己',
+      tgt1: '今日は禁煙できた！1',
+      tgt2: '今日は禁煙できた！2',
+      tgt3: '今日は禁煙できた！3',
     };
-    //exercise
+    // exercise
     const res = await request.post(endpoint).send(sampleData);
-    //assertion
+    // assertion
     res.should.have.status(201);
   });
 

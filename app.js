@@ -1,62 +1,90 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require('http-errors');
+const express = require('express');
+let path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const fetch = require('node-fetch');
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+// const { validate } = require("uuid"); //unused vars
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
 /**
  * Enable CORS request
  */
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://18.181.45.23:3000");
+  res.header('Access-Control-Allow-Origin', 'http://18.181.45.23:3000');
   res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
   );
   next();
 
-  app.options("*", (req, res) => {
+  app.options('*', (req, res) => {
     // allowed XHR methods
     res.header(
-      "Access-Control-Allow-Methods",
-      "GET, PATCH, PUT, POST, DELETE, OPTIONS"
+      'Access-Control-Allow-Methods',
+      'GET, PATCH, PUT, POST, DELETE, OPTIONS',
     );
     res.send();
   });
 });
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// Authentication before api execution using Google OAuth2 API
+app.use(async (req, res, next) => {
+  if (process.env.NODE_ENV !== 'production') {
+    next();
+    return;
+  }
+  let idToken;
+  if (req.headers['x-auth-token']) {
+    idToken = req.headers['x-auth-token'];
+  } else {
+    next(createError(403));
+    return;
+  }
+  const validatePath = 'https://oauth2.googleapis.com/tokeninfo?id_token=';
+  path = validatePath + idToken;
+  const authRes = await fetch(path);
+  if (authRes.status === 200) {
+    // in case of authentication valid
+    next();
+  } else {
+    // in case of authentication invalid
+    next(createError(403));
+  }
+});
 
-app.use(logger("dev"));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
+  next();
 });
 
 module.exports = app;
