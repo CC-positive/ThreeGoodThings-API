@@ -104,7 +104,7 @@ describe('Threetter API Server', () => {
       today: 1,
     };
     // exercise
-    const res = await request.get(endpoint).query({ googleId: target });
+    const res = await request.get(endpoint).set({ 'x-googleid': target });
     // assertion
     res.should.have.status(200);
     res.should.be.json;
@@ -122,7 +122,7 @@ describe('Threetter API Server', () => {
       today: 1,
     };
     // exercise
-    const res = await request.get(endpoint).query({ googleId: target });
+    const res = await request.get(endpoint).set({ 'x-googleid': target });
     // assertion
     res.should.have.status(200);
     res.should.be.json;
@@ -140,7 +140,7 @@ describe('Threetter API Server', () => {
       today: 0,
     };
     // exercise
-    const res = await request.get(endpoint).query({ googleId: target });
+    const res = await request.get(endpoint).set({ 'x-googleid': target });
     // assertion
     res.should.have.status(200);
     res.should.be.json;
@@ -158,7 +158,7 @@ describe('Threetter API Server', () => {
       today: 1,
     };
     // exercise
-    const res = await request.get(endpoint).query({ googleId: target });
+    const res = await request.get(endpoint).set({ 'x-googleid': target });
     // assertion
     res.should.have.status(200);
     res.should.be.json;

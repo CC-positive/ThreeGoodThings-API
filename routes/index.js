@@ -60,7 +60,7 @@ router.get('/v1/threetter/posts', (req, res) => {
 
 router.get('/v1/threetter/rewards', (req, res, next) => {
   // googleIdよりUserIdを取得し、post配列を取得
-  db.users.findOne({ attributes: ['id'], where: { googleId: req.query.googleId } })
+  db.users.findOne({ attributes: ['id'], where: { googleId: req.headers['x-googleid'] } })
     .then((data) => {
       const userId = data.dataValues.id;
       db.posts.findAll({
