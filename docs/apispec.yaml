@@ -58,7 +58,12 @@ paths:
       summary: Post a tgt record which you send in request body.
       description: ボディで指定された列を持つレコードを新規追加します.
       # リクエストのbodyについて記述する
-      parameters: []
+      parameters:
+      - name: "x-googleid"
+        in: "header"
+        description: "infomation of target user googleID"
+        schema:
+          type: "string"
       requestBody:
         content:
           application/json:
@@ -80,3 +85,54 @@ paths:
       responses:
         '201':
           description: HTTPステータスコード201が返却されます。
+
+  /v1/threetter/rewards:
+    get:
+      summary: Get the number of continuous posts and the flag that means whether today post does exist or not.
+      description: 継続投稿日数と、本日分の投稿が存在するかどうかを示すフラグ(0=本日分無し, 1=本日分あり)を取得します。今日の投稿がない場合は昨日分から継続投稿日数を計算します。
+      parameters:
+      - name: "x-googleid"
+        in: "header"
+        description: "infomation of target user googleID"
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: HTTPステータスコード200と以下の情報を含むJSONオブジェクトを返します。
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  continuation:
+                    type: number
+                    example: 3
+                  today:
+                    type: number
+                    example: 1
+
+  /v1/threetter/login:
+    post:
+      summary: Check whether the user with specified google ID does exist in "users" table. if not, add the user into "users" table.
+      description: 指定したGoogleIDのユーザが"users"tableに存在するかどうかを確認します。 いない場合はユーザを"users"tableに追加します。
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: "object"
+              properties:
+                googleId:
+                  type: string
+                  example: testtesttest@gmail.com
+                userName:
+                  type: string
+                  example: John Doe
+                picture:
+                  type: string
+                  example: https://xxx.googleusercontent.com/-xxxx/xxx/xxx/xxx/xxx/photo.jpg
+      responses:
+        '200':
+          description: 既にユーザが存在した場合はHTTPステータスコード200を返します。
+        '201':
+          description: 新規でユーザを作成した場合はHTTPステータスコード201を返します。
