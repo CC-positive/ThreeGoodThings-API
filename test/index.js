@@ -41,8 +41,9 @@ describe("Threetter API Server", () => {
       .findAll({
         raw: true,
         order: [
-          [db.tgts, 'seq', 'ASC']
-        ],   
+          ["date", "DESC"],
+          [db.tgts, "seq", "ASC"],
+        ],
         include: [
           {
             model: db.users,
@@ -65,7 +66,7 @@ describe("Threetter API Server", () => {
               user: {
                 id: post["user.id"],
                 name: post["user.userName"],
-              },  
+              },
               tgts: {
                 id1: post["tgts.id"],
                 text1: post["tgts.tgt"],
@@ -88,7 +89,7 @@ describe("Threetter API Server", () => {
     const res = await request.get(endpoint);
     //assertion
     res.should.have.status(200);
-    res.should.be.json;    
+    res.should.be.json;
     JSON.parse(JSON.stringify(res.body)).should.deep.equal(posts);
   });
 
