@@ -106,4 +106,48 @@ describe('Threetter API Server', () => {
     // assertion
     res.should.have.status(201);
   });
+
+  it('POST /login should return 201 when specicying existence user', async () => {
+    // setup
+    const deleteUserObj = {
+      googleId: 'googleIdHogeHoge',
+    };
+    const endpoint = '/v1/threetter/login';
+    const sampleData = {
+      googleId: 'googleIdHogeHoge',
+      userName: 'Taro Yamada',
+      picture:
+        'https://lh3.googleusercontent.com/a-/AOh14GgvPUM3JKBN6ndyP_Yx7I61v-8ArYIh8_D6QnLL=s96-c',
+    };
+    db.users
+      .destroy(deleteUserObj)
+      .then(async () => {
+        // execution
+        const res = await request.post(endpoint).send(sampleData);
+        // assertion
+        res.should.have.status(201);
+      })
+      .catch(async () => {
+        // execution
+        const res = await request.post(endpoint).send(sampleData);
+        // assertion
+        res.should.have.status(201);
+      });
+  });
+
+  it('POST /login should return 200 when specicying existence user', async () => {
+    // setup
+    const endpoint = '/v1/threetter/login';
+    const sampleData = {
+      googleId: 'googleIdHogeHoge',
+      userName: 'Taro Yamada',
+      picture:
+        'https://lh3.googleusercontent.com/a-/AOh14GgvPUM3JKBN6ndyP_Yx7I61v-8ArYIh8_D6QnLL=s96-c',
+    };
+    await request.post(endpoint).send(sampleData);
+    // execution
+    const res = await request.post(endpoint).send(sampleData);
+    // assertion
+    res.should.have.status(200);
+  });
 });

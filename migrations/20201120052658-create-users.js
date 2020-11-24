@@ -10,7 +10,7 @@ module.exports = {
       userName: {
         type: Sequelize.STRING,
       },
-      token: {
+      picture: {
         type: Sequelize.STRING,
       },
       googleId: {
