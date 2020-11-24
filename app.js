@@ -32,11 +32,9 @@ app.use((req, res, next) => {
   });
 });
 
+// Authentication before api execution using Google OAuth2 API
 app.use(async (req, res, next) => {
   let id_token;
-  console.log("start header------------------------");
-  console.log(req.headers);
-  console.log("end header------------------------");
   if (req.headers["x-auth-token"]) {
     id_token = req.headers["x-auth-token"];
   } else {
@@ -46,12 +44,12 @@ app.use(async (req, res, next) => {
   let validatePath = "https://oauth2.googleapis.com/tokeninfo?id_token=";
   path = validatePath + id_token;
   let authRes = await fetch(path);
-  let authJson = await authRes.json();
-  if (authJson["email"]) {
+  if (authRes.status === 200) {
+    // in case of authentication valid
     next();
   } else {
+    // in case of authentication invalid
     next(createError(403));
-    return;
   }
 });
 
