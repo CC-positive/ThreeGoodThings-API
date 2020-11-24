@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: ThreeGoodThings-API Specification
-  description: This is the specification of ThreeGoodThings-API. See https://github.com/CC-positive/ThreeGoodThings-API
+  description: This is the specification of ThreeGoodThings-API. See [https://github.com/CC-positive/ThreeGoodThings-API](https://github.com/CC-positive/ThreeGoodThings-API)
 paths:
   /v1/threetter/posts:
     get:
