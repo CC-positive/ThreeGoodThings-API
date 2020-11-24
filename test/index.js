@@ -92,6 +92,79 @@ describe('Threetter API Server', () => {
     JSON.parse(JSON.stringify(res.body)).should.deep.equal(posts);
   });
 
+  // get rewardテスト
+  // 一昨日分＋昨日分＋本日分の3日分までpost済のパターン (連続：３ 当日投稿あり)
+  it('GET /reward should return entire post continuation number', async () => {
+    // setup
+    // seedファイルがある前提
+    const endpoint = '/v1/threetter/rewards';
+    const target = 'hogegoogleid1';
+    const expect = {
+      continuation: 3,
+      today: 1,
+    };
+    // exercise
+    const res = await request.get(endpoint).query({ googleId: target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
+
+  // 昨日分＋本日分＋12日前分がpost済のパターン（連続：２ 当日投稿あり）
+  it('GET /reward should return entire post continuation number(non continuous post pattern)', async () => {
+    // setup
+    // seedファイルがある前提
+    const endpoint = '/v1/threetter/rewards';
+    const target = 'hogegoogleid2';
+    const expect = {
+      continuation: 2,
+      today: 1,
+    };
+    // exercise
+    const res = await request.get(endpoint).query({ googleId: target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
+
+  // 一昨日分＋昨日分がpost済のパターン（連続：２ 当日投稿無し）
+  it('GET /reward should return entire post continuation number(no today post pattern)', async () => {
+    // setup
+    // seedファイルがある前提
+    const endpoint = '/v1/threetter/rewards';
+    const target = 'hogegoogleid3';
+    const expect = {
+      continuation: 2,
+      today: 0,
+    };
+    // exercise
+    const res = await request.get(endpoint).query({ googleId: target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
+  // 13日前分＋12日前分＋一昨日分＋昨日分＋本日分がpost済のパターン（連続：３＋昔に２ 当日投稿あり）
+  // ⇒過去の連続を拾っていないことを確認するテスト
+  it('GET /reward should return entire post continuation number(past 3 pattern)', async () => {
+    // setup
+    // seedファイルがある前提
+    const endpoint = '/v1/threetter/rewards';
+    const target = 'hogegoogleid4';
+    const expect = {
+      continuation: 3,
+      today: 1,
+    };
+    // exercise
+    const res = await request.get(endpoint).query({ googleId: target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
+
   it('POST /posts should register TGT', async () => {
     // setup
     const endpoint = '/v1/threetter/posts';
