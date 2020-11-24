@@ -5,10 +5,11 @@
   "license": "UNLICENSED",
   "scripts": {
     "test-lint": "eslint ./test/*.js --fix",
+    "lint": "eslint '**/*.js' --fix",
     "start": "node ./bin/www",
     "sequelize": "sequelize",
     "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
-    "test": "mocha && yarn test-lint",
+    "test": "mocha && eslint '**/*.js'",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
     "production": "export NODE_ENV=production && node ./bin/www"
@@ -36,6 +37,10 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-sequelize": "^1.0.4",
     "husky": "^4.3.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",

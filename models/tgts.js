@@ -1,17 +1,17 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class tgts extends Model {
     static associate(models) {
-      tgts.belongsTo(models.posts, {foreignKey: 'postId'});
+      tgts.belongsTo(models.posts, { foreignKey: 'postId' });
     }
-  };
+  }
   tgts.init({
     postId: DataTypes.STRING,
     tgt: DataTypes.STRING,
-    seq: DataTypes.INTEGER
+    seq: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'tgts',

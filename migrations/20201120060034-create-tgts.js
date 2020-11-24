@@ -1,7 +1,6 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
-    .then(()=> queryInterface.createTable('tgts', {
+    .then(() => queryInterface.createTable('tgts', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,26 +9,26 @@ module.exports = {
       },
       postId: {
         type: Sequelize.UUID,
-        references: { model: 'posts', key: 'id'}, // 外部キー
-        onUpdate: 'cascade',  // （任意）連動して自動更新する場合
-        onDelete: 'cascade'   // （任意）連動して自動削除する場合
+        references: { model: 'posts', key: 'id' }, // 外部キー
+        onUpdate: 'cascade', // （任意）連動して自動更新する場合
+        onDelete: 'cascade', // （任意）連動して自動削除する場合
       },
       tgt: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       seq: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     })),
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('tgts');
-  }
+  },
 };
