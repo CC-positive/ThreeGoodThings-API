@@ -34,6 +34,10 @@ app.use((req, res, next) => {
 
 // Authentication before api execution using Google OAuth2 API
 app.use(async (req, res, next) => {
+  if (process.env.NODE_ENV !== "production") {
+    next();
+    return;
+  }
   let id_token;
   if (req.headers["x-auth-token"]) {
     id_token = req.headers["x-auth-token"];
