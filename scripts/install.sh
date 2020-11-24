@@ -1,4 +1,5 @@
 #!/bin/bash
-source ~/.bashrc
+su - << EOF
 cd /home/centos/deploy/ThreeGoodThings-API
 yarn --frozen-lockfile
+EOF
