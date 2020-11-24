@@ -6,8 +6,8 @@
   "scripts": {
     "test-lint": "eslint ./test/*.js --fix",
     "start": "node ./bin/www",
-    "sequelize":"sequelize",
-    "seed":"yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
+    "sequelize": "sequelize",
+    "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
     "test": "mocha && yarn test-lint",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
@@ -26,6 +26,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "node-fetch": "^2.6.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
