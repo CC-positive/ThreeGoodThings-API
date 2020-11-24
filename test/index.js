@@ -13,6 +13,7 @@ const db = require('../models/index');
 // chai
 chai.use(chaiHttp);
 chai.should();
+// const expect = chai.expect;
 
 describe('Threetter API Server', () => {
   let request;
@@ -67,6 +68,7 @@ describe('Threetter API Server', () => {
               user: {
                 id: post['user.id'],
                 name: post['user.userName'],
+                picture: post['user.picture'],
               },
               tgts: {
                 id1: post['tgts.id'],
@@ -101,9 +103,7 @@ describe('Threetter API Server', () => {
       tgt2: '今日は禁煙できた！2',
       tgt3: '今日は禁煙できた！3',
     };
-    // exercise
-    const res = await request.post(endpoint).send(sampleData);
-    // assertion
+    const res = await request.post(endpoint).set('x-googleid', 'hogegoogleid1').send(sampleData);
     res.should.have.status(201);
   });
 
