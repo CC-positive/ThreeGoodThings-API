@@ -3,9 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const fetch = require("node-fetch");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const { validate } = require("uuid");
 
 var app = express();
 
@@ -28,6 +30,29 @@ app.use((req, res, next) => {
     );
     res.send();
   });
+});
+
+app.use(async (req, res, next) => {
+  let id_token;
+  console.log("start header------------------------");
+  console.log(req.headers);
+  console.log("end header------------------------");
+  if (req.headers["x-auth-token"]) {
+    id_token = req.headers["x-auth-token"];
+  } else {
+    next(createError(403));
+    return;
+  }
+  let validatePath = "https://oauth2.googleapis.com/tokeninfo?id_token=";
+  path = validatePath + id_token;
+  let authRes = await fetch(path);
+  let authJson = await authRes.json();
+  if (authJson["email"]) {
+    next();
+  } else {
+    next(createError(403));
+    return;
+  }
 });
 
 // view engine setup
@@ -60,3 +85,18 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+function getOptions(verb, data) {
+  var options = {
+    dataType: "json",
+    method: verb,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+  return options;
+}
