@@ -26,7 +26,11 @@ router.get('/', (req, res) => {
             }
           });
           res.set({ 'Access-Control-Allow-Origin': '*' }).send(ret).end();
+        }).catch(() => {
+          res.status(500).end();
         });
+    }).catch(() => {
+      res.status(500).end();
     });
 });
 
@@ -44,6 +48,8 @@ router.post('/', (req, res) => {
       db.likes.create(likeObj).then(() => {
         res.status(201).end();
       });
+    }).catch(() => {
+      res.status(500).end();
     });
 });
 
