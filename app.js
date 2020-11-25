@@ -27,7 +27,7 @@ app.use((req, res, next) => {
       "Access-Control-Allow-Methods",
       "GET, PATCH, PUT, POST, DELETE, OPTIONS"
     );
-    res.send(200);
+    res.status(200).send();
   });
   next();
 });
