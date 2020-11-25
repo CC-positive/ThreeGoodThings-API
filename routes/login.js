@@ -24,6 +24,8 @@ router.post('/', (req, res) => {
           res.status(201).end();
         });
       }
+    }).catch(() => {
+      res.status(500).end();
     });
 });
 

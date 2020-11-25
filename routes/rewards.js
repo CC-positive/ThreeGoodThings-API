@@ -76,7 +76,11 @@ router.get('/', (req, res) => {
         } else {
           res.set({ 'Access-Control-Allow-Origin': '*' }).status(404).end();
         }
+      }).catch(() => {
+        res.status(500).end();
       });
+    }).catch(() => {
+      res.status(500).end();
     });
 });
 
