@@ -56,8 +56,7 @@ paths:
                           example: "今日は禁煙できた３！"
     post:
       summary: Post a tgt record which you send in request body.
-      description: ボディで指定された列を持つレコードを新規追加します.
-      # リクエストのbodyについて記述する
+      description: ボディで指定された列を持つレコードをpostテーブル、tgtテーブルにそれぞれ新規追加します.
       parameters:
       - name: "x-googleid"
         in: "header"
@@ -84,12 +83,16 @@ paths:
                   example: ご飯が美味しく炊けた。
       responses:
         '201':
-          description: HTTPステータスコード201が返却されます。
+          description: 当日分TGT投稿がない場合はpostテーブル、TGTテーブルにレコードを挿入しHTTPステータスコード201が返却されます。
+        '422':
+          description: 当日分TGT投稿がある場合、2重投稿と見なしレコード挿入を中止、HTTPステータスコード422が返却されます。
 
   /v1/threetter/rewards:
     get:
       summary: Get the number of continuous posts and the flag that means whether today post does exist or not.
-      description: 継続投稿日数と、本日分の投稿が存在するかどうかを示すフラグ(0=本日分無し, 1=本日分あり)を取得します。今日の投稿がない場合は昨日分から継続投稿日数を計算します。
+      description: |
+                継続投稿日数と、本日分の投稿が存在するかどうかを示すフラグ(0=本日分無し, 1=本日分あり)を取得します。
+                今日の投稿がない場合は昨日分から継続投稿日数を計算します。
       parameters:
       - name: "x-googleid"
         in: "header"
@@ -113,8 +116,12 @@ paths:
 
   /v1/threetter/login:
     post:
-      summary: Check whether the user with specified google ID does exist in "users" table. if not, add the user into "users" table.
-      description: 指定したGoogleIDのユーザが"users"tableに存在するかどうかを確認します。 いない場合はユーザを"users"tableに追加します。
+      summary: |
+              Check whether the user with specified google ID does exist in "users" table. 
+              if not, add the user into "users" table.
+      description: |
+                指定したGoogleIDのユーザが"users"tableに存在するかどうかを確認します。 
+                いない場合はユーザを"users"tableに追加します。
       parameters: []
       requestBody:
         content:
@@ -136,3 +143,59 @@ paths:
           description: 既にユーザが存在した場合はHTTPステータスコード200を返します。
         '201':
           description: 新規でユーザを作成した場合はHTTPステータスコード201を返します。
+
+  /v1/threetter/likes:
+    get:
+      summary: Get "like" number of a specific tgt.
+      description: |
+                特定のtgtの「いいね！」の回数と、
+                そのtgtに対してログインユーザが「いいね！」済か否か返します。
+      parameters:
+      - name: "x-googleid"
+        in: "header"
+        description: "infomation of target user googleID"
+        schema:
+          type: "string"
+      - name: "tgtId"
+        in: "query"
+        description: "target tgt ID"
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: |
+                      HTTPステータスコード200と以下の情報を含むJSONオブジェクトを返します。
+                      likesはtgtに対する「いいね！」の回数、likedByMeは、ログインユーザがそのtgtに対して
+                      「いいね！」を実行したかの判定をします。trueの場合は「いいね！」済です。
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  likes:
+                    type: number
+                    example: 3
+                  likedByMe:
+                    type: boolean
+                    example: true
+    post:
+      summary: Post a "likes" record when user click to "like" of specific tgt.
+      description: 特定のtgtに対し「いいね！」を実施し、likesテーブルにレコードを追加します。
+      parameters:
+      - name: "x-googleid"
+        in: "header"
+        description: "infomation of target user googleID"
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: "object"
+              properties:
+                tgtId:
+                  type: string
+                  example: "d49d7e74-3fdf-4089-a6ff-aeae66cbd644"
+      responses:
+        '201':
+          description: 新規でレコードを作成し、HTTPステータスコード201を返します。
