@@ -1,5 +1,12 @@
 const db = require('../models/index');
 
+// sleep関数
+function sleep(msec) {
+  return new Promise((resolve) => {
+    setTimeout(() => { resolve(); }, msec);
+  });
+}
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const nowraw = new Date();
@@ -33,6 +40,9 @@ module.exports = {
     const result2 = await db.users.findOne({ raw: true, attributes: ['id'], where: { userName: '二郎' } });
     const result3 = await db.users.findOne({ raw: true, attributes: ['id'], where: { userName: '三郎' } });
     const result4 = await db.users.findOne({ raw: true, attributes: ['id'], where: { userName: '四郎' } });
+
+    // result1-4の取得が下記処理で間に合わずseedingが安定しないため1秒sleep
+    await sleep(1000);
 
     const pos1 = await db.posts.findOne({
       raw: true,

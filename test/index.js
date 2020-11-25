@@ -167,6 +167,7 @@ describe('Threetter API Server', () => {
     JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
   });
 
+  // post投稿テスト
   it('POST /posts should register TGT', async () => {
     // setup
     const endpoint = '/v1/threetter/posts';
@@ -176,10 +177,27 @@ describe('Threetter API Server', () => {
       tgt2: '今日は禁煙できた！2',
       tgt3: '今日は禁煙できた！3',
     };
-    const res = await request.post(endpoint).set('x-googleid', 'hogegoogleid1').send(sampleData);
+    // 三郎(hogegoogleid3)は本日分を投稿していないため201となる想定
+    const res = await request.post(endpoint).set('x-googleid', 'hogegoogleid3').send(sampleData);
     res.should.have.status(201);
   });
 
+  // 本日分二重投稿回避テスト
+  it('POST /posts should register TGT', async () => {
+    // setup
+    const endpoint = '/v1/threetter/posts';
+    const sampleData = {
+      userName: '山田勝己',
+      tgt1: '今日は禁煙できた！1',
+      tgt2: '今日は禁煙できた！2',
+      tgt3: '今日は禁煙できた！3',
+    };
+    // 先のテストで三郎(hogegoogleid3)は本日分を投稿したため422となる想定
+    const res = await request.post(endpoint).set('x-googleid', 'hogegoogleid3').send(sampleData);
+    res.should.have.status(422);
+  });
+
+  // ユーザが存在しない場合はユーザを作成し201を返す
   it('POST /login should return 201 when specicying existence user', async () => {
     // setup
     const deleteUserObj = {
@@ -208,6 +226,7 @@ describe('Threetter API Server', () => {
       });
   });
 
+  // ユーザが存在する場合はユーザを作成せず200を返す
   it('POST /login should return 200 when specicying existence user', async () => {
     // setup
     const endpoint = '/v1/threetter/login';
