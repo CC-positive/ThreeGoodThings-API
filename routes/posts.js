@@ -61,44 +61,74 @@ router.get('/', (req, res) => {
 
 /* POST */
 router.post('/', (req, res) => {
-  db.users
-    .findAll({
-      where: { googleId: req.headers['x-googleid'] },
+  // 既に本日分投稿がないかチェック
+  //  ユーザ取得
+  db.users.findOne({
+    attributes: ['id'],
+    where: {
+      googleId: req.headers['x-googleid'],
+    },
+  //  ユーザの最新の投稿を取得
+  }).then((data) => {
+    const userId = data.dataValues.id;
+    db.posts.findOne({
+      where: {
+        userId,
+      },
       raw: true,
-    })
-    .then((data1) => {
-      const postObj = {
-        userId: data1[0].id,
-        date: new Date(),
-      };
-      db.posts.create(postObj).then((data2) => {
-        const tgtObj1 = {
-          postId: data2.dataValues.id,
-          tgt: req.body.tgt1,
-          seq: 1,
-        };
-        const tgtObj2 = {
-          postId: data2.dataValues.id,
-          tgt: req.body.tgt2,
-          seq: 2,
-        };
-        const tgtObj3 = {
-          postId: data2.dataValues.id,
-          tgt: req.body.tgt3,
-          seq: 3,
-        };
-        Promise.all([
-          db.tgts.create(tgtObj1),
-          db.tgts.create(tgtObj2),
-          db.tgts.create(tgtObj3),
-        ]).then(() => {
-          res.status(201).end();
-        });
-      });
-    })
-    .catch(() => {
-      res.status(500).end();
+      order: [
+        ['date', 'DESC'],
+      ],
+      //  最新投稿が本日分か否か確認
+    }).then((data) => {
+      const todayRaw = new Date();
+      const today = new Date(todayRaw.getFullYear(), todayRaw.getMonth(), todayRaw.getDate());
+      if (today.toDateString() === data.date.toDateString()) {
+        res.status(422).end(); // 投稿済の場合422を返す
+      } else {
+        //  最新投稿が本日分でない場合投稿実施
+        db.users
+          .findAll({
+            where: { googleId: req.headers['x-googleid'] },
+            raw: true,
+          })
+          .then((data1) => {
+            const postObj = {
+              userId: data1[0].id,
+              date: new Date(),
+            };
+            db.posts.create(postObj).then((data2) => {
+              const tgtObj1 = {
+                postId: data2.dataValues.id,
+                tgt: req.body.tgt1,
+                seq: 1,
+              };
+              const tgtObj2 = {
+                postId: data2.dataValues.id,
+                tgt: req.body.tgt2,
+                seq: 2,
+              };
+              const tgtObj3 = {
+                postId: data2.dataValues.id,
+                tgt: req.body.tgt3,
+                seq: 3,
+              };
+              Promise.all([
+                db.tgts.create(tgtObj1),
+                db.tgts.create(tgtObj2),
+                db.tgts.create(tgtObj3),
+              ]).then(() => {
+                res.status(201).end();
+              });
+            });
+          }).catch(() => {
+            res.status(500).end();
+          });
+      }
     });
+  }).catch(() => {
+    res.status(500).end();
+  });
 });
 
 module.exports = router;
