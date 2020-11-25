@@ -6,9 +6,10 @@ const logger = require("morgan");
 const fetch = require("node-fetch");
 
 // const { validate } = require("uuid"); //unused vars
-const loginRouter = require("./routes/login");
-const postsRouter = require("./routes/posts");
-const rewardsRouter = require("./routes/rewards");
+const loginRouter = require('./routes/login');
+const postsRouter = require('./routes/posts');
+const rewardsRouter = require('./routes/rewards');
+const likesRouter = require('./routes/likes');
 
 const app = express();
 
@@ -68,9 +69,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/v1/threetter/login", loginRouter);
-app.use("/v1/threetter/posts", postsRouter);
-app.use("/v1/threetter/rewards", rewardsRouter);
+app.use('/v1/threetter/login', loginRouter);
+app.use('/v1/threetter/posts', postsRouter);
+app.use('/v1/threetter/rewards', rewardsRouter);
+app.use('/v1/threetter/likes', likesRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

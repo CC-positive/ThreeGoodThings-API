@@ -242,4 +242,33 @@ describe('Threetter API Server', () => {
     // assertion
     res.should.have.status(200);
   });
+
+  it('GET /likes should return like number', async () => {
+    // setup
+    // seedファイルがある前提
+    const resultTgt1 = await db.tgts.findOne({ raw: true, attributes: ['id'], where: { tgt: '一郎のいいこと1-1' } });
+    const endpoint = `/v1/threetter/likes?tgtId=${resultTgt1.id}`;
+    const target = 'hogegoogleid1';
+    const expect = {
+      likes: 2,
+      likedByMe: true,
+    };
+    // exercise
+    const res = await request.get(endpoint).set({ 'x-googleid': target });
+    // assertion
+    res.should.have.status(200);
+    res.should.be.json;
+    JSON.parse(JSON.stringify(res.body)).should.deep.equal(expect);
+  });
+
+  it('POST /posts should register TGT', async () => {
+    // setup
+    const endpoint = '/v1/threetter/likes';
+    const resultTgt1 = await db.tgts.findOne({ raw: true, attributes: ['id'], where: { tgt: '一郎のいいこと1-2' } });
+    const sampleData = {
+      tgtId: resultTgt1.id,
+    };
+    const res = await request.post(endpoint).set('x-googleid', 'hogegoogleid1').send(sampleData);
+    res.should.have.status(201);
+  });
 });
