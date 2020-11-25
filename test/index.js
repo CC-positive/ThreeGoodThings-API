@@ -183,7 +183,7 @@ describe('Threetter API Server', () => {
   });
 
   // 本日分二重投稿回避テスト
-  it('POST /posts should register TGT', async () => {
+  it('POST /posts should reject posting TGT if todays post does exist', async () => {
     // setup
     const endpoint = '/v1/threetter/posts';
     const sampleData = {
