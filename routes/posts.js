@@ -83,7 +83,7 @@ router.post('/', (req, res) => {
     }).then((data) => {
       const todayRaw = new Date();
       const today = new Date(todayRaw.getFullYear(), todayRaw.getMonth(), todayRaw.getDate());
-      if (today.toDateString() === data.date.toDateString()) {
+      if (data && today.toDateString() === data.date.toDateString()) {
         res.status(422).end(); // 投稿済の場合422を返す
       } else {
         //  最新投稿が本日分でない場合投稿実施
