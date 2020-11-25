@@ -2,7 +2,7 @@ name: AWS Code Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, fix/CORS-preflight]
 
 jobs:
   deploy:
