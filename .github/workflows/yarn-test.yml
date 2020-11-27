@@ -11,7 +11,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: password
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -28,15 +28,31 @@ jobs:
         run: yarn sequelize db:create
         env:
           NODE_ENV: test
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
       - name: Migrate database
         run: yarn sequelize db:migrate
         env:
           NODE_ENV: test
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
       - name: Seed database
         run: yarn seed
         env:
           NODE_ENV: test
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
       - name: run test
         run: yarn test
         env:
           NODE_ENV: test
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
