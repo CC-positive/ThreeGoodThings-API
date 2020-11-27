@@ -104,18 +104,16 @@ router.get('/', async (req, res) => {
         num3 = num2 + 2;
       }
 
-      const tgtsdata = {
-        tgts: [{
-          id: data6[num1]['tgts.id'],
-          text: data6[num1]['tgts.tgt'],
-        }, {
-          id: data6[num2]['tgts.id'],
-          text: data6[num2]['tgts.tgt'],
-        }, {
-          id: data6[num3]['tgts.id'],
-          text: data6[num3]['tgts.tgt'],
-        }],
-      };
+      const tgtsdata = [{
+        tgtId: data6[num1]['tgts.id'],
+        tgtText: data6[num1]['tgts.tgt'],
+      }, {
+        tgtId: data6[num2]['tgts.id'],
+        tgtText: data6[num2]['tgts.tgt'],
+      }, {
+        tgtId: data6[num3]['tgts.id'],
+        tgtText: data6[num3]['tgts.tgt'],
+      }];
 
       res.set({ 'Access-Control-Allow-Origin': '*' }).send(tgtsdata).end();
     } else {
@@ -132,19 +130,16 @@ router.get('/', async (req, res) => {
         num3 = num2 + 2;
       }
 
-      const tgtsdata = {
-        tgts: [{
-          id: data2[num1]['tgts.id'],
-          text: data2[num1]['tgts.tgt'],
-        }, {
-          id: data2[num2]['tgts.id'],
-          text: data2[num2]['tgts.tgt'],
-        }, {
-          id: data2[num3]['tgts.id'],
-          text: data2[num3]['tgts.tgt'],
-        }],
-      };
-
+      const tgtsdata = [{
+        tgtId: data2[num1]['tgts.id'],
+        tgtText: data2[num1]['tgts.tgt'],
+      }, {
+        tgtId: data2[num2]['tgts.id'],
+        tgtText: data2[num2]['tgts.tgt'],
+      }, {
+        tgtId: data2[num3]['tgts.id'],
+        tgText: data2[num3]['tgts.tgt'],
+      }];
       res.set({ 'Access-Control-Allow-Origin': '*' }).send(tgtsdata).end();
     }
 
