@@ -8,31 +8,47 @@ const ses = new AWS.SES();
 const router = express.Router();
 
 router.get('/', (req, res) => {
+  const ret = {};
+  ret.likes = 0;
+  ret.likedByMe = false;
+  ret.likedUser = [];
   db.users
     .findAll({
       where: { googleId: req.headers['x-googleid'] },
       raw: true,
-    })
-    .then((data1) => {
+    }).then((data1) => {
       const userId = data1[0].id;
       db.likes.findAll({
         where: { tgtId: req.query.tgtId },
         raw: true,
-      })
-        .then((data2) => {
-          const ret = {};
-          ret.likes = 0;
-          ret.likedByMe = false;
-          data2.forEach((record) => {
-            ret.likes += 1;
-            if (record.userId === userId) {
-              ret.likedByMe = true;
-            }
-          });
-          res.set({ 'Access-Control-Allow-Origin': '*' }).send(ret).end();
-        }).catch(() => {
-          res.status(500).end();
+      }).then((data2) => {
+        const userIds = [];
+        data2.forEach((record) => {
+          ret.likes += 1;
+          if (record.userId === userId) {
+            ret.likedByMe = true;
+          }
+          userIds.push(record.userId);
         });
+        db.users.findAll((
+          {
+            where: { id: userIds },
+          }
+        )).then((users) => {
+          users.forEach((user) => {
+            ret.likedUser.push({
+              userId: user.dataValues.id,
+              userName: user.dataValues.userName,
+              picture: user.dataValues.picture,
+              email: user.dataValues.email,
+            });
+          });
+        }).then(() => {
+          res.set({ 'Access-Control-Allow-Origin': '*' }).send(ret).end();
+        });
+      }).catch(() => {
+        res.status(500).end();
+      });
     }).catch(() => {
       res.status(500).end();
     });
