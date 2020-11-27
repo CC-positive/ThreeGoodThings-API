@@ -13,6 +13,9 @@ module.exports = {
       picture: {
         type: Sequelize.STRING,
       },
+      email: {
+        type: Sequelize.STRING,
+      },
       googleId: {
         type: Sequelize.STRING,
       },
