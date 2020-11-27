@@ -19,6 +19,7 @@ router.post('/', (req, res) => {
           googleId: req.body.googleId,
           userName: req.body.userName,
           picture: req.body.picture,
+          // email: req.body.email,
         };
         db.users.create(userObj).then(() => {
           res.status(201).end();

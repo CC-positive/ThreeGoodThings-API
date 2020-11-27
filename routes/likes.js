@@ -1,5 +1,9 @@
 const express = require('express');
+const AWS = require('aws-sdk');
 const db = require('../models/index');
+
+AWS.config.update({ region: 'ap-northeast-1' });
+const ses = new AWS.SES();
 
 const router = express.Router();
 
@@ -46,6 +50,32 @@ router.post('/', (req, res) => {
         userId: data1[0].id,
       };
       db.likes.create(likeObj).then(() => {
+        const params = {
+          Destination: {
+            ToAddresses: [
+              'threetter@gmail.com',
+            ],
+          },
+          Message: {
+            Body: {
+              Text: {
+                Data: 'これはテストメールです。',
+                Charset: 'utf-8',
+              },
+            },
+            Subject: {
+              Data: 'テスト',
+              Charset: 'utf-8',
+            },
+          },
+          Source: 'threetter@gmail.com',
+        };
+        ses.sendEmail(params, (error, response) => {
+          if (error) {
+            console.log(error);
+          }
+          console.log(response);
+        });
         res.status(201).end();
       });
     }).catch(() => {
