@@ -39,7 +39,7 @@ router.get('/:googleId', async (req, res) => {
                 id: post['user.id'],
                 name: post['user.userName'],
                 picture: post['user.picture'],
-                // email: post['user.email'],
+                email: post['user.email'],
               },
               tgts: {
                 id1: post['tgts.id'],
@@ -99,7 +99,7 @@ router.get('/', async (req, res) => {
                   id: post['user.id'],
                   name: post['user.userName'],
                   picture: post['user.picture'],
-                  // email: post['user.email'],
+                  email: post['user.email'],
                 },
                 tgts: {
                   id1: post['tgts.id'],
