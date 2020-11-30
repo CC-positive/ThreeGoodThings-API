@@ -294,4 +294,13 @@ describe('Threetter API Server', () => {
     // assertion
     res.should.have.status(200);
   });
+
+  it('GET /posts should return entire post list', async () => {
+    // setup
+    const endpoint = '/v1/threetter/posts/hogegoogleid1';
+    // exercise
+    const res = await request.get(endpoint).set({ 'x-googleid': 'hogegoogleid1' });
+    // assertion
+    res.should.have.status(200);
+  });
 });
