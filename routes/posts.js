@@ -4,6 +4,66 @@ const db = require('../models/index');
 
 const router = express.Router();
 
+router.get('/:googleId', async (req, res) => {
+  db.posts
+    .findAll({
+      where: {},
+      raw: true,
+      order: [
+        ['date', 'DESC'],
+        [db.tgts, 'seq', 'ASC'],
+      ],
+      include: [
+        {
+          model: db.users,
+          required: true,
+          where: { googleId: req.headers['x-googleid'] },
+        },
+        {
+          model: db.tgts,
+          required: true,
+        },
+      ],
+    })
+    .then((data) => {
+      if (data) {
+        console.log(data);
+        const posts = [];
+        data.forEach((post) => {
+          const postsIndex = posts.findIndex((p) => p.id === post.id);
+          if (postsIndex === -1) {
+            const resPost = {
+              id: post.id,
+              date: post.date.toString(),
+              user: {
+                id: post['user.id'],
+                name: post['user.userName'],
+                picture: post['user.picture'],
+                // email: post['user.email'],
+              },
+              tgts: {
+                id1: post['tgts.id'],
+                text1: post['tgts.tgt'],
+              },
+            };
+            posts.push(resPost);
+          } else if (!posts[postsIndex].tgts.id2) {
+            posts[postsIndex].tgts.id2 = post['tgts.id'];
+            posts[postsIndex].tgts.text2 = post['tgts.tgt'];
+          } else {
+            posts[postsIndex].tgts.id3 = post['tgts.id'];
+            posts[postsIndex].tgts.text3 = post['tgts.tgt'];
+          }
+        });
+        res.set({ 'Access-Control-Allow-Origin': '*' }).send(posts).end();
+      } else {
+        res.set({ 'Access-Control-Allow-Origin': '*' }).status(404).end();
+      }
+    }).catch(() => {
+      res.status(500).end();
+    });
+});
+
 /* GET home page. */
 router.get('/', async (req, res) => {
   if (req.query.random === undefined) {
@@ -143,33 +203,6 @@ router.get('/', async (req, res) => {
       }];
       res.set({ 'Access-Control-Allow-Origin': '*' }).send(tgtsdata).end();
     }
-
-    /*
-    const data2 = await db.likes.findAll();
-
-     const data3 = await db.posts.findAll({
-      where: { userId:{ [Op.ne]:userID }} ,
-      raw: true,
-    }) ;
-
-    const data4= await db.tgts.findAll({
-      where: { postId:data3 },
-      raw: true,
-    })
- */
-
-    /*
-    const data3 = await db.posts.findAll({
-        where: { userId:  userId},
-        raw: true,
-        include:{
-          model: db.tgts,
-          required: true,
-        }
-      },
-      ) */
-
-    //    exceptPortId=data2.map((data)=>{return data.id});
   }
 });
 
