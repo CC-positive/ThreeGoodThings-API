@@ -55,44 +55,61 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  let likedUserName;
+  let likedtgt;
   db.users
     .findAll({
       where: { googleId: req.headers['x-googleid'] },
       raw: true,
     })
     .then((data1) => {
+      likedUserName = data1[0].userName;
       const likeObj = {
         tgtId: req.body.tgtId,
         userId: data1[0].id,
       };
       db.likes.create(likeObj).then(() => {
-        const params = {
-          Destination: {
-            ToAddresses: [
-              'threetter@gmail.com',
-            ],
-          },
-          Message: {
-            Body: {
-              Text: {
-                Data: 'これはテストメールです。',
-                Charset: 'utf-8',
-              },
-            },
-            Subject: {
-              Data: 'テスト',
-              Charset: 'utf-8',
-            },
-          },
-          Source: 'threetter@gmail.com',
-        };
-        ses.sendEmail(params, (error, response) => {
-          if (error) {
-            console.log(error);
-          }
-          console.log(response);
-        });
-        res.status(201).end();
+        db.tgts
+          .findOne({
+            where: { id: req.body.tgtId },
+          }).then((tgt) => {
+            likedtgt = tgt.tgt;
+            db.posts.findOne({
+              where: { id: tgt.postId },
+            }).then((post) => {
+              db.users.findOne({
+                where: { id: post.userId },
+              }).then((user) => {
+                const params = {
+                  Destination: {
+                    ToAddresses: [
+                      user.email,
+                    ],
+                  },
+                  Message: {
+                    Body: {
+                      Text: {
+                        Data: `${likedUserName}さんがあなたの投稿「${likedtgt}」にいいねしました。`,
+                        Charset: 'utf-8',
+                      },
+                    },
+                    Subject: {
+                      Data: `${likedUserName}さんがあなたの投稿にいいねしました`,
+                      Charset: 'utf-8',
+                    },
+                  },
+                  Source: 'threetter@gmail.com',
+                };
+                ses.sendEmail(params, (error, response) => {
+                  if (error) {
+                    console.log(error);
+                  }
+                  console.log(response);
+                });
+                res.status(201).end();
+              });
+            });
+          });
       });
     }).catch(() => {
       res.status(500).end();
