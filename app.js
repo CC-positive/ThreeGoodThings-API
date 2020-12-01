@@ -35,6 +35,8 @@ app.options('*', (req, res) => {
   res.status(200).end();
 });
 
+app.use('/healthcheck', require('express-healthcheck')());
+
 // Authentication before api execution using Google OAuth2 API
 app.use(async (req, res, next) => {
   if (process.env.NODE_ENV !== 'production') {
