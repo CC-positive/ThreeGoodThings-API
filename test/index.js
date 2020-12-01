@@ -69,6 +69,7 @@ describe('Threetter API Server', () => {
                 id: post['user.id'],
                 name: post['user.userName'],
                 picture: post['user.picture'],
+                email: post['user.email'],
               },
               tgts: {
                 id1: post['tgts.id'],
