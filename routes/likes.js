@@ -83,7 +83,7 @@ router.post('/', (req, res) => {
                 const params = {
                   Destination: {
                     ToAddresses: [
-                      user.email,
+                      user.dataValues.email,
                     ],
                   },
                   Message: {
