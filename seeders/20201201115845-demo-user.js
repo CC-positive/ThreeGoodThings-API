@@ -16,6 +16,13 @@ module.exports = {
         googleId: '104579608407176775552',
         createdAt: now,
         updatedAt: now,
+      }, {
+        userName: '北村大成',
+        picture: 'https://lh3.googleusercontent.com/a-/AOh14GgaitXakK0RBE-NHcHzjXKoY6gmmHBrFgAxMPH2vw=s96-c',
+        email: 'taisei513k@gmail.com',
+        googleId: '101507614192290138984',
+        createdAt: now,
+        updatedAt: now,
       }]);
   },
 
