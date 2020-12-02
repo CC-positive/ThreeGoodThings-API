@@ -8,11 +8,14 @@
     "lint": "eslint '**/*.js' --fix",
     "start": "node ./bin/www",
     "sequelize": "sequelize",
-    "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
+    "seedall": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed:all",
+    "seeddev": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed --seed 20201201115845-demo-user && yarn sequelize db:seed --seed 20201201120812-demo-posts && yarn sequelize db:seed --seed 20201201121312-demo-tgts", 
+    "seed": "yarn sequelize db:seed:undo:all && yarn sequelize db:seed --seed 20201120053617-test-users && yarn sequelize db:seed --seed 20201120060137-test-posts && yarn sequelize db:seed --seed 20201120060142-test-tgts && yarn sequelize db:seed --seed 20201125020724-test-likes",
     "dev-test": "mocha && eslint **/*.js --fix",
     "test": "mocha && eslint '**/*.js' --fix",
     "migrate": "yarn sequelize db:migrate:undo:all && yarn sequelize db:migrate",
     "setup": "yarn migrate && yarn seed",
+    "setupdev": "yarn migrate && yarn seeddev",
     "production": "export NODE_ENV=production && node ./bin/www"
   },
   "lint-staged": {
